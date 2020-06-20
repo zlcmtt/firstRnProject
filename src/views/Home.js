@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { View,Text,StyleSheet,FlatList,Dimensions,TouchableOpacity } from 'react-native'
+import SplashScreen from 'react-native-splash-screen'
+import { connect } from 'react-redux'
 import { Button } from '@ant-design/react-native';
-export default class Home extends Component {
+import { setUserName } from '../store/action/home'
+class Home extends Component {
     constructor(props){
         super(props)
         this.state = {
@@ -10,6 +13,10 @@ export default class Home extends Component {
         }
     }
 
+    componentDidMount() {
+        SplashScreen.hide()
+        this.props.setUserName('li')
+    }
     onEndReached = () => {
         const { list } = this.state
         setTimeout(() => {
@@ -52,11 +59,12 @@ export default class Home extends Component {
 
     render(){
         const { list,refreshing } = this.state
+        const { userName } = this.props
         return(
             <View>
-                {/*<View style={{justifyContent:'center',flexDirection:'row'}}>*/}
-                    {/*<Button style={{height:40,width:200}}>default</Button>*/}
-                {/*</View>*/}
+                <View style={{justifyContent:'center',flexDirection:'row'}}>
+                    <Button style={{height:40,width:200}}>{userName}</Button>
+                </View>
                 <FlatList
                     style={Styles.list}
                     data={list}
@@ -73,6 +81,22 @@ export default class Home extends Component {
     }
 }
 
+const mapStateToProps = state => {
+    return{
+        userName: state.Home
+    }
+}
+const mapDispatchToProps = dispatch => {
+    return {
+        setUserName: name => {
+            dispatch((setUserName(name)))
+        }
+    }
+}
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Home)
 
 const ListFooterComponent = () => {
     return (<View style={Styles.ListFooterComponent}>

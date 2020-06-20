@@ -21,17 +21,21 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import MyStack from "./src/navigation/navigation";
 import { setTopLevelNavigator } from './src/navigation/navigatorRef'
+import { Provider } from 'react-redux'
+import store from './src/store'
 const App: () => React$Node = () => {
   return (
     <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView style={styles.container}>
-          <NavigationContainer ref={navigatorRef => {
-              setTopLevelNavigator(navigatorRef);//设置顶层导航
-          }}>
-              <MyStack></MyStack>
-          </NavigationContainer>
-      </SafeAreaView>
+        <Provider store={store}>
+            <StatusBar barStyle="dark-content" />
+            <SafeAreaView style={styles.container}>
+                <NavigationContainer ref={navigatorRef => {
+                    setTopLevelNavigator(navigatorRef);//设置顶层导航
+                }}>
+                    <MyStack></MyStack>
+                </NavigationContainer>
+            </SafeAreaView>
+        </Provider>
     </>
   );
 };
